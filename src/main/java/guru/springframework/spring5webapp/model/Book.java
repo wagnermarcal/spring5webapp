@@ -1,6 +1,9 @@
 package guru.springframework.spring5webapp.model;
 
+import guru.springframework.spring5webapp.repositories.PublisherRepository;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,20 +13,22 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ManyToOne
+    private Publisher publisher;
+
     private String name;
     private String isbn;
 
     @ManyToMany(mappedBy = "books")
-    private Set<Author> authors;
+    private Set<Author> authors = new HashSet<>();
 
     public Book() {
 
     }
 
-    public Book(String name, String isbn, Set<Author> authors) {
+    public Book(String name, String isbn) {
         this.name = name;
         this.isbn = isbn;
-        this.authors = authors;
     }
 
     public Long getId() {
@@ -32,6 +37,14 @@ public class Book {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 
     public String getName() {
